@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <button type='submit' onclick="getInfo()">查询</button>
+  <p id="info"></p>
+  <script>
+    function getInfo(){
+      let url='https://api.apiopen.top/getJoke?page=1&count=2&type=video';
+
+      var xhr = new XMLHttpRequest();
+      xhr.onreadystatechange=function(){
+        if(xhr.readyState===4){
+          if(xhr.status===200){
+            return success(xhr.responseText);
+          }else{
+            alert('失败！');
+          }
+        }
+      }
+      xhr.open('Get',url);
+      xhr.send();
+    }
+    function success(data){
+      let info =document.getElementById("info");
+      let getInfo=JSON.parse(data);
+      console.log(getInfo);
+      if(getInfo.code===200){
+        info.innerHTML=getInfo.result[0].text+"<img src='"+
+        getInfo.result[0].thumbnail+"'/>";
+
+      }else {
+        info.innerHTML=shiren.message;
+      }
+    }
+  </script>
+</body>
+
+</html>

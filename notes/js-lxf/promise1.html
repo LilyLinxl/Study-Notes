@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // var promise1=new Promise(function(resolve,reject){
+    //   setTimeout(function(){
+    //     resolve('foo');
+    //   },300);
+    // });
+    // promise1.then(function(value){
+    //   console.log(value);
+    // });
+    // console.log(promise1);
+    //参数是executor函数，它带有 resolve 和 reject 两个参数。
+    //Promise构造函数执行时立即调用executor函数,
+    //resolve 和 reject 两个函数作为参数传递给executor,
+    //（executor 函数在Promise构造函数返回所建promise实例对象前被调用）,
+    //resolve 和 reject 函数被调用时，分别将promise的状态改为fulfilled（完成）或rejected（失败）。
+    //executor 内部通常会执行一些异步操作，一旦异步操作执行完毕(可能成功/失败),
+    //要么调用resolve函数来将promise状态改成fulfilled，
+    //要么调用reject 函数将promise的状态改为rejected。
+    //如果在executor函数中抛出一个错误,
+    //那么该promise 状态为rejected。executor函数的返回值被忽略。
+    
+    var isLiForget = true;
+    //promise对象
+    var getCloth = new Promise(function(resolve,reject){
+      //resolve,reject函数如果被调用了,就会把函数里的结果作为参数传递出去；
+      //resolve是把函数里的结果传递出去，-----cloth对象
+      //而reject就说明是承诺没实现，这相当于是出错误了，所以它会把报错的信息作为参数传递出去。
+      //----forget the promise
+      if(!isLiForget){
+        var cloth={
+          color:'red',
+          price:'$120'
+        };
+        resolve(cloth);
+      }else{
+        var err = new Error("forget the promise");
+        reject(err);
+      }
+    });
+    //调用promise
+    //用到 .then() 和.catch() 函数来实现我们获得promise后所采取的措施
+    //.then()有两个参数：onFulfilled 和 onRejected函数(作为回调函数被调用)
+    //有两个参数：onFulfilled在Promise 实现时调用，参数类型是函数时，接受最终结果
+    //原样返回 promise 最终结果
+    //onRejected,接收参数：拒绝的原因
+      var testFn = function(){
+      getCloth.then(function(fulfilled){
+        console.log(fulfilled);
+      }).catch(function(rejected){
+        console.log(rejected.message);
+      });
+    }
+    //.catch() 是当promise没有实现的时候，状态为rejected时被使用
+    //.then() 里面的函数有一个fulfilled的参数，
+    //这个参数的值就是promise实现后调用resolve()所返回的值，在这里就是 cloth ；
+    //同理.catch() 里面的一个rejected参数的值就是promise没有实现而
+    //调用reject()所返回的错误信息值在这个例子就是 err 。
+
+    testFn();
+  </script>
+</body>
+</html>

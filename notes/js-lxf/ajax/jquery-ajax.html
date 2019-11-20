@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <p>输入当前城市:<input type="text" id="city"></p>
+  <button type="submit" onclick="getWeather()">查询</button>
+  <p id="weatherInfo"></p>
+  <p id="test-response-text"></p>
+
+  <script src="jquery-1.12.1.min.js"></script>
+  <script>
+    function getWeather() {
+      function ajaxLog(s) {
+        var txt = $('#test-response-text');
+        txt.text(txt.text() + '\n' + s);
+      }
+      var city=$("#city").val();
+      $('#test-response-text').val('');
+      var jqxhr = $.post('https://www.apiopen.top/weatherApi', {
+        city:city
+      }).done(function (data) {
+        ajaxLog('成功，收到的数据:' + JSON.stringify(data));
+      }).fail(function (xhr, status) {
+        ajaxLog('失败:' + xhr.status + ',原因:' + status);
+      }).always(function () {
+        ajaxLog('请求完成:无论成功或失败都会调用');
+      });
+    }
+
+  </script>
+</body>
+
+</html>

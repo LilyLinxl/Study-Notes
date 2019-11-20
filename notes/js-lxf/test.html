@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+//true,true,true,false,false,false
+// !逻辑非
+// 逻辑非操作符首先会将它的操作数转换为一个布尔值，然后再对其求反
+// 1.对象--------->false
+// 2.空字符串--------->true
+// 3.非空字符串--------->true
+// 4.数值0--------->true
+// 5.非0数值--------->false
+// 6.null--------->true
+// 7.NaN--------->true
+// 8.undefined--------->true
+// ==相等(先转换操作数再比较它们的相等性)
+// 只有数值能进行比较，所以所有比较类型最终都会转化为数值再进行比较。
+// 1. 如果一个操作数是布尔值，则在比较相等性之前先将其转换为数值--false转换成0   true转换成1
+// 2. 如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转化成数值
+// 3. 如果一个操作数是对象，另一个操作数不是，若一个值是对象，另一个值是数字或字符串
+// ，则会使用valueOf()，再尝试使用toString()，除了日期类，日期类只使用toString()转换
+// 4.如果一个操作数为null，另一个为undefined，则他们相等
+// 5.其他不同类型之间的比较均不相等。
+console.log([]==0);
+//空数组是对象，[].valueOf 返回其本身 []，然后进行toString()转换"" 则其转换为数字0--->结果为true
+console.log(![]==0);
+//空数组是对象,![]为false，flase转换为数字0--->结果为true
+console.log([]==![]);
+//![]为false--->[]==false,[]和false转化为数字为0---->结果为true
+console.log([]==[]);
+//两边都是相同数据类型时，==是直接比较两边数据，因为[]属于引用类型，在两个[]分别指向不同的堆内存
+//--->结果为false
+console.log({}==!{});
+//!{}为false--->{}==false，{}和false转化为数字分别为1,0--->结果为false
+console.log({}=={});
+//同[]==[]--->结果为false
+  </script>
+</body>
+</html>

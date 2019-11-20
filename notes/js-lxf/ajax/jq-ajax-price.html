@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <button type="submit" onclick="lookStock()">查询</button>
+
+  <p id="current_price"></p>
+  <script src="jquery-1.12.1.min.js"></script>
+
+  <script>
+    // function getPrice() {
+    //   var res = $.ajax("http://api.money.126.net/data/feed/0000001,1399001", {
+    //     dataType: 'jsonp', // 期待返回数量类型为 jsonp 
+    //     jsonp: 'callback', // 
+    //     jsonpCallback: 'refreshPrice' // 回调函数名;
+    //   });
+    // }
+    // //setting中三个参数一起组装起来了为:
+    // //http://api.money.126.net/data/feed/0000001,1399001?callback=refreshPrice
+    // // 所以 当 上面这个js加载进来后, 形式为: refreshPrice({.....});而函数的定义需要 自定义.
+    function refreshPrice(data, status) {
+      debugger
+        var text =
+        data['0000001'].name + ":" + data['0000001'].price + "<br/>" +
+        data['1399001'].name + ":" + data['1399001'].price;
+      // $("#current_price").slideUp('fast').html(text).slideDown('slow');
+      alert(text);
+      
+    }
+    function lookStock() {
+      $.ajax({
+        type: 'get',
+        url: "http://api.money.126.net/data/feed/0000001,1399001",
+        async: false,
+        dataType: 'jsonp',
+        jsonp: 'callback',
+        jsonpCallback:"refreshPrice",
+        success: function (data) {
+          var str = '当前价格：' +
+            data['0000001'].name + ': ' +
+            data['0000001'].price + '；' +
+            data['1399001'].name + ': ' +
+            data['1399001'].price;
+          alert(str);
+        },
+        error: function () {
+          alert('出错了');
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

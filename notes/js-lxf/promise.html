@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <p id="test-promise-log"></p>
+  <p id="test-promise-ajax-result"></p>
+  <script>
+    // 清除log:
+    var logging = document.getElementById('test-promise-log');
+    while (logging.children.length > 1) {
+      logging.removeChild(logging.children[logging.children.length - 1]);
+    }
+
+    // 输出log到页面:
+    function log(s) {
+      var p = document.createElement('p');
+      p.innerHTML = s;
+      logging.appendChild(p);
+    }
+
+    //生成一个0-2之间的随机数，如果小于1，则等待一段时间后返回成功，否则返回失败
+    // new Promise(function (resolve, reject) {
+    //   log('start new Promise...');
+    //   var timeOut = Math.random() * 2;
+    //   log('set timeout to: ' + timeOut + ' seconds.');
+    //   setTimeout(function () {
+    //     if (timeOut < 1) {
+    //       log('call resolve()...');
+    //       resolve('200 OK');
+    //     }
+    //     else {
+    //       log('call reject()...');
+    //       reject('timeout in ' + timeOut + ' seconds.');
+    //     }
+    //   }, timeOut * 1000);
+    // }).then(function (r) {
+    //   log('Done: ' + r);
+    // }).catch(function (reason) {
+    //   log('Failed: ' + reason);
+    // });
+
+    //串行执行一系列需要异步计算获得结果的任务
+    // 0.5秒后返回input*input的计算结果:
+    // function multiply(input) {
+    //   return new Promise(function (resolve, reject) {
+    //     log('calculating ' + input + ' x ' + input + '...');
+    //     setTimeout(resolve, 500, input * input);
+    //   });
+    // }
+
+    // // 0.5秒后返回input+input的计算结果:
+    // function add(input) {
+    //   return new Promise(function (resolve, reject) {
+    //     log('calculating ' + input + ' + ' + input + '...');
+    //     setTimeout(resolve, 500, input + input);
+    //   });
+    // }
+
+    // var p = new Promise(function (resolve, reject) {
+    //   log('start new Promise...');
+    //   resolve(123);
+    // });
+
+    // p.then(multiply)
+    //   .then(add)
+    //   .then(multiply)
+    //   .then(add)
+    //   .then(function (result) {
+    //     log('Got value: ' + result);
+    //   });
+
+    //AJAX异步执行函数转换为Promise对象，看看用Promise如何简化异步处理
+    // function ajax(method, url, data) {
+    //   var request = new XMLHttpRequest();
+    //   return new Promise(function (resolve, reject) {
+    //     request.onreadystatechange = function () {
+    //       if (request.readyState === 4) {
+    //         if (request.status === 200) {
+    //           resolve(request.responseText);
+    //         } else {
+    //           reject(request.status);
+    //         }
+    //       }
+    //     };
+    //     request.open(method, url);
+    //     request.send(data);
+    //   });
+    // }
+    // var log = document.getElementById('test-promise-ajax-result');
+    // var p = ajax('GET', 'https://www.apiopen.top/weatherApi');
+    // p.then(function (text) { // 如果AJAX成功，获得响应内容
+    //   log.innerText = text;
+    // }).catch(function (status) { // 如果AJAX失败，获得响应代码
+    //   log.innerText = 'ERROR: ' + status;
+    // });
+
+    //Promise还可以并行执行异步任务,用Promise.all()实现如下
+    var p1 = new Promise(function (resolve, reject) {
+      setTimeout(resolve, 500, 'P1');
+    });
+    var p2 = new Promise(function (resolve, reject) {
+      setTimeout(resolve, 600, 'P2');
+    });
+    // 同时执行p1和p2，并在它们都完成后执行then:
+    Promise.all([p1, p2]).then(function (results) {
+      console.log(results); // 获得一个Array: ['P1', 'P2']
+    });
+
+    //有些时候，多个异步任务是为了容错。比如，同时向两个URL读取用户的个人信息，只需要获得先返回的结果即可。这种情况下，用Promise.race()实现：
+
+    var p1 = new Promise(function (resolve, reject) {
+      setTimeout(resolve, 500, 'P1');
+    });
+    var p2 = new Promise(function (resolve, reject) {
+      setTimeout(resolve, 600, 'P2');
+    });
+    Promise.race([p1, p2]).then(function (result) {
+      console.log(result); // 'P1'
+    });
+// 由于p1执行较快，Promise的then()将获得结果'P1'。p2仍在继续执行，但执行结果将被丢弃。
+// 如果我们组合使用Promise，就可以把很多异步任务以并行和串行的方式组合起来执行。
+  </script>
+</body>
+
+</html>

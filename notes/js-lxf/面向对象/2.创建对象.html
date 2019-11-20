@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // var arr=[1,2,3];
+    // console.dir(arr);
+    // function foo(){
+    //   return 0;
+    // }
+    // console.dir(foo);
+    //1.构造函数
+    // function Student(name){
+    //   this.name=name;
+    //   this.hello=function(){
+    //     alert('hello,'+this.name+'!');
+    //   }
+    // }
+    // var xiaoming= new Student('小明');
+    // xiaoming.name;
+    // xiaoming.hello();
+    // console.dir(xiaoming);
+    // console.dir(Student.prototype.__proto_===xiaoming.__proto_);
+    // console.dir(Student);
+    //2.封装new操作
+    // function Student(props){
+    //   this.name=props.name||'匿名';
+    //   this.age=props.age||1;
+    // }
+    // function createStudent(props){
+    //   return new Student(props||{});
+    // }
+    // var xiaoming =createStudent();
+    // console.log(xiaoming.name);
+    function Cat(name){
+    this.name=name;
+    }
+    Cat.prototype.say=function(){
+    return 'Hello,'+this.name+'!';
+    }
+    var kitty = new Cat('Kitty');
+    var doraemon = new Cat('哆啦A梦');
+    if (kitty && kitty.name === 'Kitty' && kitty.say && typeof kitty.say === 'function' && kitty.say() === 'Hello,Kitty!' && kitty.say === doraemon.say) {
+        console.log('测试通过!');
+    } else {
+        console.log('测试失败!');
+    }
+  </script>
+</body>
+</html>
