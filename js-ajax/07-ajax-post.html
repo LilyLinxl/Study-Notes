@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <table border="1">
+    <tr>
+      <td>用户名</td>
+      <td><input type="text" id="username"></td>
+    </tr>
+    <tr>
+      <td>密码</td>
+      <td><input type="password" id="password"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><button id="btn">登录</button></td>
+    </tr>
+  </table>
+  <script>
+    var btn = document.getElementById("btn")
+    var txtUsername = document.getElementById("username")
+    var txtPassword = document.getElementById("password")
+    btn.onclick=function(){
+      //1.获取输入的内容
+      var username = txtUsername.value;
+      var password = txtPassword.value;
+      //2.发送post请求
+      var xhr = new XMLHttpRequest()
+      xhr.open("POST","./login.php");
+      xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded")
+      xhr.send(`username=${username}&password=${password}`);
+      xhr.addEventListener('readystatechange',function(){
+        if(this.readyState!==4) return
+        console.log(this.responseText)
+      })
+    }
+  </script>
+</body>
+
+</html>

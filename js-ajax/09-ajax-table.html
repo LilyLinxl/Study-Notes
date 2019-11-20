@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <table>
+    <tbody id="content"></tbody>
+  </table>
+  <script>
+    var content = document.getElementById("content");
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', './test.php');
+    xhr.send();
+    xhr.onreadystatechange = function () {
+      if (this.readyState !== 4) return
+      var res = JSON.parse(this.responseText)
+      var data = res.data
+      for(var i = 0;i<data.length;i++){
+        var tr = document.createElement('tr');
+        tr.innerHTML="<td>"+data[i].id+"</td>";
+        content.appendChild(tr);
+      }
+      
+    }
+  </script>
+</body>
+</html>

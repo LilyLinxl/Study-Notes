@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <ul id="list">
+  </ul>
+  <p id="info"></p>
+
+  <script>
+    var list = document.getElementById("list");
+    var info = document.getElementById("info");
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET', './users.php')
+    xhr.send(null)
+    xhr.addEventListener('readystatechange', function () {
+      if (this.readyState !== 4) return
+      var data=JSON.parse(this.responseText);
+      for(var i=0;i<data.length;i++){
+        var li = document.createElement("li");
+        li.innerHTML=data[i].name;
+        li.id=data[i].id;
+        li.addEventListener("click",function(){
+          var xhr1 = new XMLHttpRequest()
+          xhr1.open('GET','./users.php?id='+this.id)
+          xhr1.send(null)
+          xhr1.addEventListener("readystatechange",function () {
+            if (this.readyState !== 4) return
+            var obj = JSON.parse(this.responseText)
+            alert(obj.age)
+          })
+        })
+        list.appendChild(li);
+      }
+    })
+
+
+  </script>
+</body>
+
+</html>

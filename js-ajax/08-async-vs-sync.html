@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //异步
+    // console.time('ajax')
+    // var xhr = new XMLHttpRequest()
+    // xhr.open('GET','time.php',true)
+    // xhr.send()
+    // console.timeEnd('ajax')
+    //同步
+    console.time('ajax')
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET','time.php',false)
+    xhr.send()
+    console.timeEnd('ajax')
+  </script>
+</body>
+</html>

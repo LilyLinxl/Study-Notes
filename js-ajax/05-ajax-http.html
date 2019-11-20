@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>遵循http协议</title>
+</head>
+<body>
+  <script>
+    var xhr = new XMLHttpRequest()
+    xhr.open('POST','./add.php')//设置请求行
+    xhr.setRequestHeader('Foo','Bar')//设置请求头
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+    xhr.send('key1=value1&key2=value2')//以urlencoded格式设置请求体
+  </script>
+</body>
+</html>

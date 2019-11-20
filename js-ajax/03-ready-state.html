@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+  var xhr = new XMLHttpRequest()
+  console.log(xhr.readyState)
+  //0，初始化 请求代理对象
+  xhr.open("GET","./time.php")
+  console.log(xhr.readyState)
+  //1，open方法已经调用，建立一个与服务端特定端口的连接
+  xhr.send()
+  // console.log(xhr.readyState)
+
+  //onreadystatechange少用这种方式注册事件，因为如果要多次使用这事件就得多次注册，浪费内存
+  xhr.addEventListener('readystatechange',function(){
+    // if(this.readyState!==4) return;
+    // console.log(this.responseText)
+    // console.log(this.readyState)
+    switch(this.readyState){
+      case 2:
+      console.log(this.getAllResponseHeaders().split())
+      console.log(this.getResponseHeader('server'))
+
+      console.log(this.responseText)
+      //2,已经接受到了响应报文的响应头(响应体可能会很大，所以先接受响应头)
+      break
+      case 3:
+      console.log(this.readyState)
+       //3,正在下载响应报文的响应体，响应体可能为空或者不完整
+      break
+      case 4:
+      console.log(this.readyState)
+      //4.整个响应报文已经完整下载下来了
+      break;
+    }
+  })
+  //结果0,1,2,3,4
+
+  </script>
+</body>
+</html>

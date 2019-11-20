@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>接收响应</title>
+</head>
+<body>
+  <script>
+  var xhr = new XMLHttpRequest()
+  
+  // xhr.open('GET','./time.php')
+  // xhr.send()
+  //因为客户端永远不知道服务端何时才能返回我们需要的响应
+  //所以ajax api采用事件的机制(通知)
+  xhr.onreadystatechange=function(){
+    //状态改变时就触发事件
+    // console.log(1)//执行了三次
+    // console.log(this.readyState)//234
+    if(this.readyState!==4) return
+    //获取响应内容(响应体)
+    console.log(this.responseText)
+  }
+  //一共有五个状态，0初始，1注册事件，2open，3发送请求，4获取响应
+  xhr.open('GET','./time.php')//代码的执行顺序会影响第一个状态能否显示
+  xhr.send()
+  //因为响应需要时间，所以无法通过返回值的方式返回响应
+  // var response=xhr.send()
+  // console.log(response)
+  </script>
+</body>
+</html>

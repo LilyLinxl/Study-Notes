@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Ajax快速上手</title>
+</head>
+<body>
+  <script>
+  //AJAX是一套 API 核心提供的类型:XMLHttpRequest
+  //1.安装浏览器(用户代理)
+  //xhr类似于浏览器的作用，发送请求接收响应
+    var xhr =new XMLHttpRequest()
+    //2.打开浏览器，输入网址
+    xhr.open('GET','http://localhost:8082/ajax/time.php')
+    //3.敲回车键，开始请求
+    xhr.send()
+    //4.看结果
+  </script>
+</body>
+</html>
