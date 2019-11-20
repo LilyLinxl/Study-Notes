@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>来点甜点</title>
+	<style type="text/css">
+		body {
+			background-color: rgba(65, 66, 69, 0.9);
+			font-family: "微软雅黑";
+		}
+
+		#menu,
+		#show-dishes {
+			width: 560px;
+			margin: 20px auto;
+			background-color: #f9f9f9;
+			text-align: center;
+			border-radius: 10px;
+			box-shadow: 0 2px 10px 1px #cdcdcd;
+			overflow: hidden;
+		}
+
+		#show-dishes {
+			height: 100px;
+			margin-top: 60px;
+			padding: 20px 0;
+		}
+
+		span {
+			display: inline-block;
+			width: 100px;
+			height: 100px;
+			line-height: 130px;
+			text-align: center;
+			vertical-align: middle;
+			border-radius: 50%;
+		}
+
+		.current {
+			border-radius: 50px;
+			color: #fff;
+		}
+
+		.icon {
+			width: 1em;
+			height: 1em;
+			line-height: 1em;
+			vertical-align: -0.15em;
+			fill: currentColor;
+			overflow: hidden;
+			font-size: 60px;
+		}
+
+		.btn-group input {
+			display: inline-block;
+			padding: 6px 20px;
+			border-radius: 6px;
+			background-color: #964a1f;
+			color: #fff;
+			font-size: 16px;
+			border: 0;
+			margin: 30px 10px;
+		}
+
+		h2 {
+			color: #964a1f;
+
+		}
+	</style>
+	<script src="font/iconfont.js" type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+	<div id="show-dishes"></div>
+	<div id="menu">
+		<h2>MENU</h2>
+		<div id="dish-container">
+
+		</div>
+		<div class="btn-group">
+			<input type="button" name="" id="btn1" value="点一样" />
+			<input type="button" name="" id="btn2" value="点两样" />
+			<input type="button" name="" id="btn3" value="点五样" />
+			<input type="button" name="" id="btn4" value="重新选择" />
+		</div>
+	</div>
+
+</body>
+<script type="text/javascript">
+	var dishImageHref = [
+		"#icon-food-cookie",
+		"#icon-food-pecan",
+		"#icon-food-avocado",
+		"#icon-food-pudding",
+		"#icon-food-strawberry",
+		"#icon-food-doughnut",
+		"#icon-food-chips",
+		"#icon-food-popcorn",
+		"#icon-food-bread",
+		"#icon-food-pizza",
+		"#icon-food-hotdog",
+		"#icon-food-taco",
+		"#icon-food-popsicle",
+		"#icon-food-eggyolkcake",
+		"#icon-food-sushi",
+		"#icon-food-cake",
+		"#icon-food-macaron",
+		"#icon-food-cashew",
+		"#icon-food-mochi",
+		"#icon-food-pistachio"
+	];
+
+	//构造函数(类) 
+	//1.点菜机器
+	//属性：1.菜品,点菜数量，菜品的背景色，菜单（开始显示区域），选中后显示区域
+	//方法:1.点菜（随机选菜，背景色随机）
+	//2.将点的菜放到显示区域
+	(function () {
+		function SelectDishMashion(dishs, selectNum, menu, showArea) {
+			this.dishs = dishs || null;
+			this.selectNum = selectNum || null;
+			this.menu = menu || null;
+			this.showArea = showArea || null;
+			this.init();
+		};
+		//初始化方法，在菜单中显示所有菜品
+		SelectDishMashion.prototype.init = function () {
+			///将菜品图片追加到开始显示的区域
+			for (var i = 0; i < this.dishs.length; i++) {
+				var span = document.createElement("span");
+				this.menu.appendChild(span);
+				var html = "<svg class='icon' aria-hidden='true'><use xlink:href=" + this.dishs[i] + "></use></svg>";
+				span.innerHTML = html;
+				//***问题1.span.appendChild("<svg class='icon' aria-hidden='true'><use xlink:href=" + this.dishs[i] + "></use></svg>")
+				//***错误原因：括号中的不是一个dom节点无法追加到span
+			}
+		};
+		//选择菜品方法
+		SelectDishMashion.prototype.selectDish = function () {
+			//获取菜品总数和点菜数量n，调用随机数方法,选出n个菜品,
+			//在选择的过程中调用背景色随机设置方法，
+			//选完后，取消定时器
+			//将选中的菜品添加到选中后显示区域
+
+			//1.随机选择菜品
+			//***问题2：设置定时停止定时器
+			//***解决方法：记下执行的次数，超过一定数量后再清楚定时器
+			this.clearSelected();
+			var that = this;
+			var num = 0;
+			var selectArr = [];
+			var timeId = window.setInterval(function () {
+				selectArr = randomSelect(that.dishs.length, that.selectNum);
+				for (var i = 0; i < that.dishs.length; i++) {
+					this.menu.children[i].style.backgroundColor = "";
+				}
+				for (var i = 0; i < selectArr.length; i++) {
+					this.menu.children[selectArr[i]].style.backgroundColor = randomColor();
+				}
+				num++;
+				if (num == 5) {
+					window.clearInterval(timeId);
+					//2.将选择的菜品放到展示区
+					for (var i = 0; i < selectArr.length; i++) {
+						var span = document.createElement("span");
+						span = this.menu.children[selectArr[i]].cloneNode(true);
+						span.style.backgroundColor = "";
+						this.showArea.appendChild(span);
+					}
+				}
+			}, 300);
+
+
+		};
+		//清除已选择
+		SelectDishMashion.prototype.clearSelected=function(){
+			this.showArea.innerHTML="";
+			for (var i = 0; i < this.dishs.length; i++) {
+					this.menu.children[i].style.backgroundColor = "";
+				}
+
+		}
+
+		//随机选择要显示的菜品索引
+		// 问题3：随机选择多个不同数据
+		//解决方法：定义两个数组，一个是菜品索引的数组，一个是被选择索引的数组
+		function randomSelect(length, selectNum) {
+			var arr = new Array();
+			for (var i = 0; i < length; i++) {
+				arr.push(i);
+			}
+			var selectArr = [];
+			for (var j = 0; j < selectNum; j++) {
+				var index = parseInt(Math.random() * length);
+				while (!arr[index]) {//可能会出现随机数重复的问题，如果重复则重新选择
+					index = parseInt(Math.random() * length);
+				}
+				selectArr.push(arr[index]);
+				arr.splice(index, 1);
+			}
+			return selectArr;
+		}
+
+		//随机设置背景色
+		function randomColor() {
+			var color = "rgb(";
+			for (var i = 0; i < 2; i++) {
+				color += parseInt(Math.random() * 256);
+				color += ",";
+			}
+			color += parseInt(Math.random() * 256);
+			color += ")";
+			return color;
+		};
+		window.SelectDishMashion = SelectDishMashion;
+	})();
+
+	var menu = document.getElementById("dish-container");
+	var showArea = document.getElementById("show-dishes");
+	var sdm = new SelectDishMashion(dishImageHref, null, menu, showArea);
+	//点一样
+	document.getElementById("btn1").onclick = function () {
+		sdm.selectNum = 1;
+		sdm.selectDish();
+	}
+	document.getElementById("btn2").onclick = function () {
+		sdm.selectNum = 2;
+		sdm.selectDish();
+	}
+	document.getElementById("btn3").onclick = function () {
+		sdm.selectNum = 5;
+		sdm.selectDish();
+	}
+	document.getElementById("btn4").onclick = function () {
+		sdm.clearSelected();
+	}
+</script>
+
+</html>

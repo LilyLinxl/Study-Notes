@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>轮播图</title>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+
+		body {
+			background-color: #eee
+		}
+
+		#box {
+			width: 400px;
+			height: 560px;
+			border: 6px solid #CCCCCC;
+			margin: 100px auto;
+			overflow: hidden;
+			position: relative;
+			text-align: center;
+		}
+
+		#box:hover #btn-group {
+			display: block;
+		}
+
+		#box img {
+			width: 100%;
+			height: auto;
+		}
+
+		ul {
+			width: 2000px;
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+
+		ul li {
+			float: left;
+		}
+
+		#btn-group {
+			position: absolute;
+			width: 100%;
+			height: 40px;
+			margin-top: 260px;
+			display: none;
+		}
+
+		#btn-group span {
+			position: absolute;
+			left: 0;
+			top: 0;
+			display: inline-block;
+			width: 40px;
+			height: 40px;
+			line-height: 35px;
+			font-size: 40px;
+			text-align: center;
+			font-weight: bold;
+			vertical-align: middle;
+			background-color: rgba(255, 255, 255, 0.6);
+			color: #666;
+		}
+
+		#btn-group span:hover {
+			background-color: rgba(255, 255, 255, 0.8);
+			color: #333;
+			cursor: pointer;
+		}
+
+		#btn-group #right {
+			right: 0;
+			left: initial;
+		}
+
+		ol {
+			position: absolute;
+			bottom: 10px;
+			right: 0;
+		}
+
+		ol li {
+			width: 12px;
+			height: 12px;
+			float: left;
+			background-color: #fff;
+			border-radius: 6px;
+			margin: 0 8px;
+		}
+
+		ol li:hover {
+			cursor: pointer;
+		}
+
+		ol li.current {
+			background-color: #FF8400;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="box">
+		<ul id="ul">
+			<li><img src="img/1.jpg" /></li>
+			<li><img src="img/2.jpg" /></li>
+			<li><img src="img/3.jpg" /></li>
+			<li><img src="img/4.jpg" /></li>
+		</ul>
+		<div id="btn-group">
+			<span id="left">
+				＜</span> <span id="right">＞
+			</span>
+		</div>
+		<ol id="pageCon"></ol>
+	</div>
+
+	<script type="text/javascript">
+		// 属性有 
+		// 父容器
+		// imgli 的ul
+		// img数组//可以自己去循环
+		// 圆点数组 根据图片数组得来长度
+		// 左右按钮
+		// 单个img宽度
+		// 循环时间
+		// 
+		// 方法有 
+		// 横向移动到任意位置
+		// 向右播放
+		// 向左播放 
+		// 自动播放 循环向右
+		function Slider(container, ul, pageCon, btnGroup, imgWidth, time, autoplay) {
+			this.container = container || null;
+			this.ul = ul || null;
+			this.pageCon = pageCon || null;
+			this.btnGroup = btnGroup || null;
+			this.imgWidth = imgWidth || null;
+			this.time = time || null;
+			this.autoplay = autoplay;
+			this.timeId;
+			this.index = 0;
+			this.startPlay();
+		};
+		Slider.prototype.startPlay = function () {
+			var that = this;
+			this.init();
+			this.pageInation();
+			var leftBtn = this.btnGroup.children[0];
+			var rightBtn = this.btnGroup.children[1];
+			leftBtn.onclick = function () {
+				that.goLeft();
+			}
+			rightBtn.onclick = function () {
+				that.goRight();
+			}
+			this.loop();
+
+		};
+		//初始化
+		Slider.prototype.init = function () {
+			//添加圆点图标和相应的事件(鼠标移上改变圆点背景色以及图片的移动)
+			var that = this;
+			var imgLi = this.ul.children;
+			for (var i = 0; i < imgLi.length; i++) {
+				var liObj = document.createElement("li");
+				liObj.setAttribute("index", i);
+				this.pageCon.appendChild(liObj);
+				//缺少默认选中第一个圆点，图片列表将第一张图复制一份添加到列表后
+				
+			}
+			this.pageCon.children[0].className = "current";
+			var imgItem = this.ul.children[0].cloneNode(true);
+			this.ul.appendChild(imgItem);
+
+
+		};
+		//动画方法
+		Slider.prototype.animate = function (ele, target) {
+			clearInterval(ele.timeId);
+			ele.timeId = setInterval(function () {
+				var current = ele.offsetLeft;
+				var step = 10;
+				step = current < target ? step : -step;
+				current += step;
+				if (Math.abs(current - target) < Math.abs(step)) {
+					ele.style.left = target + "px";
+					clearInterval(ele.timeId);
+				} else {
+					ele.style.left = current + "px";
+				}
+			}, 5);
+		};
+		//分页按钮点击事件
+		Slider.prototype.pageInation = function () {
+			var that = this;
+			if (this.pageCon) {
+				var pageArr = this.pageCon.children;
+				for (var i = 0; i < pageArr.length; i++) {
+					pageArr[i].onclick = function () {
+						this.index = this.getAttribute("index");
+						for (var j = 0; j < pageArr.length; j++) {
+							pageArr[j].className = "";
+						}
+						this.className = "current";
+						that.animate(that.ul, -this.index * that.imgWidth);
+					};
+				}
+			}
+		};
+		//向右
+		Slider.prototype.goRight = function () {
+			//图片切换
+			var pageArr = this.pageCon.children;
+			if (this.index > pageArr.length - 1) {
+				this.index = 0;
+				this.ul.style.left = 0 + "px";
+			}
+			this.index++;
+			if (this.index == pageArr.length) {
+				for (var i = 0; i < pageArr.length; i++) {
+					pageArr[i].className = "";
+				}
+				pageArr[0].className = "current";
+			} else {
+				for (var i = 0; i < pageArr.length; i++) {
+					pageArr[i].className = "";
+				}
+				pageArr[this.index].className = "current";
+			}
+			this.animate(this.ul, -this.index * this.imgWidth);
+			//图标切换
+		};
+		Slider.prototype.goLeft = function () {
+			var pageArr = this.pageCon.children;
+			if (this.index == 0) {
+				this.index = pageArr.length;
+				this.ul.style.left = -this.index * this.imgWidth+"px";
+			} 
+				this.index--;
+				for (var i = 0; i < pageArr.length; i++) {
+					pageArr[i].className = "";
+				}
+				pageArr[this.index].className = "current";
+			this.animate(this.ul, -this.index * this.imgWidth);
+		};
+		Slider.prototype.loop=function(){
+			var that=this;
+			clearInterval(this.timeId);
+			this.timeId=setInterval(function(){that.goRight()},that.time);
+			this.container.onmouseover=function(){
+				clearInterval(that.timeId);
+			}
+			this.container.onmouseleave=function(){
+				var tt=that;
+				that.timeId=setInterval(function(){tt.goRight()},that.time);//that.goRight()要放在function(){}里面
+				//setInterval(tt.goRight(),..是不对的
+				//setInterval的第一个参数要调用一个代码串，也可以是一个函数
+			}
+		};
+		var con = document.getElementById("box");
+		var ul = document.getElementById("ul");
+		var pageCon = document.getElementById("pageCon");
+		var btnGroup = document.getElementById("btn-group");
+
+		var slider = new Slider(con, ul, pageCon, btnGroup, 400,3000,true);
+
+	</script>
+
+</body>
+
+</html>

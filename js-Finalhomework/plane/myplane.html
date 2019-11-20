@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>打飞机游戏</title>
+	<link rel="stylesheet" type="text/css" href="css/plane.css" />
+	<style>
+		@-webkit-keyframes scrollToUp {
+			0% {
+				background-position: 0 0;
+			}
+
+			100% {
+				background-position: 0 568px;
+			}
+		}
+
+		@keyframes scrollToUp {
+			0% {
+				background-position: 0 0;
+			}
+
+			100% {
+				background-position: 0 568px;
+			}
+		}
+
+		#game-con {
+			background-attachment: fixed;
+			/* 让背景图片和文本脱离*/
+			background-position: center center;
+			-webkit-animation: scrollToUp 20s linear infinite;
+			/* 引入 scrollToUp动画 */
+			animation: scrollToUp 20s linear infinite;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="container">
+		<div id="game-con">
+			<div id="score-board">
+				<span>分数：</span>
+				<span id="score">0</span>
+			</div>
+			<div id="suspend-board">
+				<button type="button" id="goOn">继续</button>
+				<button type="button" class="reStart">重新开始</button>
+				<button type="button" id="stop">回到主页</button>
+			</div>
+			<div id="end-board">
+				<div>飞机大战分数</div>
+				<div id="endScore">2000</div>
+				<button type="button" class="reStart">再来一局</button>
+			</div>
+		</div>
+		<div id="planes"></div>
+		<div id="start-con">
+			<button type="button" id="start">开始游戏</button>
+		</div>
+	</div>
+	<script>
+		//构造函数
+		//1.游戏
+		//属性:分数/游戏玩家/游戏npc/游戏面板
+		//方法：开始游戏
+		//2.游戏玩家
+		//属性:飞机，位置，是否被打死，飞行区域，子弹
+		//方法:初始化，移动位置，发射子弹,得分
+		//3.游戏npc
+		//属性:飞机（被打死需要的子弹数量，是否被打死，机型（图片），飞行速度--貌似随着分数变高速度会变快,分值）
+		//方法:初始化，随机显示飞机的机型和横向位置（定时器），自动向下移动
+		(function () {
+			// 1.游戏
+			function Game(startCon, gameCon, score, palyer, npc) {
+				this.startCon = startCon || null;
+				this.gameCon = gameCon || null;
+				this.score = score || null;
+			};
+			Game.prototype.start = function () {
+				//切换为开始游戏模式，背景向下移动,显示游戏玩家，延迟5秒显示npc
+				this.startCon.style.display = "none";
+				this.gameCon.style.display = "block";
+				var that = this;
+				//问题1.背景图无缝向下移动
+				//解决方法：用css的方式实现
+			};
+
+			Game.prototype.stop = function () {
+			};
+			//游戏玩家
+			function Player(plane, position, isKilled, area, bullet, gameCon) {
+				this.plane = plane || null;
+				this.position = position || [120, 480];
+				this.isKilled = isKilled || null;
+				this.area = area || null;
+				this.bullet = bullet || null;
+				Game.call(this, null, gameCon);//继承Game，为了获取游戏面板距离窗口的长度
+				this.init();
+			};
+			Player.prototype.init = function () {
+				this.plane.style.left = this.position[0] + "px";
+				this.plane.style.top = this.position[1] + "px";
+				this.area.appendChild(this.plane);
+				//问题2.发射子弹
+				//解决方案：如下
+			};
+			Player.prototype.sendBullet = function () {
+				var that = this;
+				document.onmousemove = function (e) {
+					that.plane.style.left = e.clientX - that.gameCon.parentNode.offsetLeft + "px";
+					that.plane.style.top = e.clientY + "px";
+				}
+				setInterval(() => {
+					var bulletObj = this.bullet.cloneNode(true);
+					this.area.appendChild(bulletObj);
+					//子弹的位置
+					var left = this.plane.offsetLeft + this.plane.offsetWidth / 2;
+					var top = this.plane.offsetTop;
+					run(bulletObj, left, top, "up", 20, 50); //子弹 发射方法
+				}, 100);
+			}
+
+
+			function Npc(enemys, area, bullet) {
+				this.enemys = enemys || null;
+				Player.call(this, null, null, null, area, bullet);
+				this.init();
+			};
+			Npc.prototype.init = function () {
+				//随机出现npc，
+				var that = this;
+				var timeId = setInterval(function () {
+					var index = parseInt(Math.random() * (that.enemys.length));
+					var enemy = that.enemys[index];
+					//npc的位置
+					var left = parseInt(Math.random() * (this.area.offsetWidth)) + enemy.size.offsetWidth;
+					var top = enemy.size.offsetTop;
+					this.area.appendChild(enemy.size);
+					run(enemy.size, left, top, "down", 20, enemy.speed);
+
+					//击中积分
+					// var bullet=document.getElementsByClassName("bullet")[0];
+					// var bullet_left = bullet.style.left;
+					// var bullet_top = bullet.style.top;
+					// for (var i = 0; i < that.enemys.length; i++) {
+					// 	var num = 0;
+					// 	var sum = that.enemys[i].bullets;
+					// 	if (bullet_left == that.enemys[i].size.style.left && bullet_top == that.enemys[i].size.top) {
+					// 		num++;
+					// 		if (num == sum) {
+					// 			console.log(that.enemys[i].size.score);
+					// 		}
+					// 	}
+					// }
+				}, 5000);
+			};
+
+			function run(dom, value1, value2, direction, step, speed) {
+				dom.style.left = value1 + "px";
+				dom.style.top = value2 + "px";
+				setInterval(function () {
+					if (direction == "up") {
+						if (dom.offsetTop - step >= 0) {
+							dom.style.top = dom.offsetTop - step + "px";
+						} else {
+							dom.style.top = -100 + "px";
+						}
+					} else {
+						if (dom.offsetTop + step <= dom.parentNode.offsetHeight) {
+							dom.style.top = dom.offsetTop + step + "px";
+						} else {
+							dom.style.top = "0px";
+						}
+					}
+				}, speed);
+
+			}
+			window.Game = Game;
+			window.Player = Player;
+			window.Npc = Npc;
+		})();
+		var gameCon = document.getElementById("game-con");
+		var startCon = document.getElementById("start-con");
+		var area = document.getElementById("planes");//飞行地点
+		//实例化游戏对象
+
+		var game = new Game(startCon, gameCon, null, null, null);
+		//开始游戏
+		document.getElementById("start").onclick = function () {
+			game.start();
+			var myPlane = document.createElement("div");
+			myPlane.setAttribute("id", "myPlane");
+			myPlane.style.width = "66px";
+			myPlane.style.height = "80px";
+			myPlane.style.backgroundImage = "url(./image/my.gif)";
+			myPlane.style.position = "absolute";
+			myPlane.style.cursor = "pointer";
+
+			//创建子弹
+			var bullet = document.createElement("div");
+			bullet.setAttribute("class", "bullet");
+			bullet.style.width = "6px";
+			bullet.style.height = "14px";
+			bullet.style.backgroundImage = "url(image/bullet1.png)";
+			bullet.style.position = "absolute";
+			bullet.style.left = "0px";
+			bullet.style.top = "0px";
+			//实例化飞机对象
+			var player = new Player(myPlane, null, false, area, bullet, gameCon);
+			player.sendBullet();
+			var enemy1 = document.createElement("div");
+			enemy1.style.width = "32px";
+			enemy1.style.height = "24px";
+			enemy1.style.backgroundImage = "url(./image/enemy1_fly_1.png)";
+			enemy1.style.position = "absolute";
+			enemy1.style.left = "0px";
+			enemy1.style.top = "0px";
+			var enemy2 = enemy1.cloneNode(true);
+			enemy2.style.width = "46px";
+			enemy2.style.height = "60px";
+			enemy2.style.backgroundImage = "url(./image/enemy3_fly_1.png)";
+			var enemy3 = enemy1.cloneNode(true);
+			enemy3.style.width = "110px";
+			enemy3.style.height = "164px";
+			enemy3.style.backgroundImage = "url(./image/enemy2_fly_1.png)";
+			var enemys = [
+				{
+					bullets: 5,
+					isKilled: false,
+					size: enemy1,
+					speed: 200,
+					score: 10
+				},
+				{
+					bullets: 10,
+					isKilled: false,
+					size: enemy2,
+					speed: 200,
+					score: 30
+				},
+				{
+					bullets: 15,
+					isKilled: false,
+					size: enemy3,
+					speed: 200,
+					score: 50
+				}
+			];
+			var npc = new Npc(enemys, area, bullet);
+		}
+
+
+	</script>
+
+</body>
+
+</html>
