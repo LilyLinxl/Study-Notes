@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <form action="">
+           姓名: <input type="text" id="" v-model="uname">
+           <br>
+           性别: <input type="radio" id="" value="male" v-model="gender">男
+           <input type="radio" id="" value="female" v-model="gender">女
+           <br>
+
+            爱好: <input type="checkbox" id="" value="basketball" v-model="hobbies">
+            <input type="checkbox" id="" value="sing"  v-model="hobbies">
+            <input type="checkbox" id="" value="code"  v-model="hobbies">
+            <br>
+
+            职业:<select v-model="selected" multiple>
+                <option disabled value="">请选择职业</option>
+                <option value="1">医生</option>
+                <option value="2">教师</option>
+                <option value="3">工程师</option>
+            </select>
+            <br>
+            个人简介:<textarea v-model="textarea"></textarea>
+        </form>
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+               uname:'jack',
+               gender:'male',
+               hobbies:["basketball","sing"],
+               selected:["1","2"],
+               textarea:'lalalla'
+            }
+        });
+    </script>
+</body>
+
+</html>

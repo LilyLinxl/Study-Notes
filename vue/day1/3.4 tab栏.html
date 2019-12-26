@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Document</title>
+    <style>
+        .active {
+            color:red;
+        }
+        li {
+            display: block;
+            width: 100px;
+            height: 30px;
+            border:1px solid green;
+        }
+        .ret {
+            display: none;
+        }
+        .current {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <ul id="example-1">
+            <li @click='change(index)' :class='currentIndex==index?"activeClass":""' key="item.id" v-for="(item,index) of object">
+              {{ item.msg }}
+            </li>
+          </ul>
+          <div class="ret" :class='currentIndex==index?"current":""' :key="item.id" v-for="(item,index) of object">
+            {{ item.ret }}
+          </div>
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                currentIndex:0,
+                object: [
+                    {
+                       id:1,
+                       msg:'hello',
+                       ret:'hi'
+                    }, {
+                       id:2,
+                       msg:'hi',
+                       ret:'hello'
+
+                    }, {
+                       id:1,
+                       msg:'bye',
+                       ret:'see you'
+                    }
+                ],
+                activeClass:'active',
+                current:'current'
+            },
+            methods:{
+                change:function(index){
+                    this.currentIndex=index
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

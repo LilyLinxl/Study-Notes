@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <ul id="example-1">
+            <li v-for="(item,index) of items">
+              {{ item.message }}----{{index}}---{{parentMessage}}
+            </li>
+          </ul>
+          <ul id="example-2">
+            <li v-for="(value,name,index) of object">
+              {{ value }}----{{index}}---{{name}}
+            </li>
+          </ul>
+          <div v-if='value==12' v-for="(item,index) of items">
+            {{ item.message }}----{{index}}---{{parentMessage}}
+          </div>
+
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                parentMessage:'hehe',
+                items:[
+                    {message:'hello'},
+                    {message:'hi'}
+                ],
+                object: {
+                    title: 'How to do lists in Vue',
+                    author: 'Jane Doe',
+                    publishedAt: '2016-04-10'
+                },
+                value:14
+            }
+        });
+    </script>
+</body>
+
+</html>

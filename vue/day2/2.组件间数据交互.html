@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+    <menu-item  :pnum='12' :pbool='true' :parr='parr'></menu-item>
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        Vue.component('menu-item',{
+            props:['pnum','pbool','parr'],
+            template:
+            `<div>
+                <div>{{pnum }}{{typeof pnum}}</div>
+                <div>{{pbool }}{{typeof pbool}}</div>
+                <ul>
+                    <li :key="index" v-for='(item,index) in parr'> {{item}}</li>
+                    </ul>
+
+            </div>
+                `
+        });
+    var vm = new Vue({
+        el:'#app',
+        data:{
+           parr:['apple','orange','banana']
+        }
+    })
+    </script>
+</body>
+</html>

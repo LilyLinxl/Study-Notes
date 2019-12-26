@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+<input type="text" name="a" id="" v-model="a">
+<input type="text" name="b" id="" v-model="b">
+<input type="button" value="计算" v-on:click='jisuan'>
+结果:<span v-text="ret"></span>
+
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                a:'',
+                b:'',
+                ret:''
+            },
+            methods:{
+                jisuan:function(){
+                    this.ret=parseInt(this.a)+parseInt(this.b)
+                }
+            }
+        });
+    </script>
+</body>
+</html>

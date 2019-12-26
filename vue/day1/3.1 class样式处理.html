@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Document</title>
+    <style>
+    .active {
+        width: 20px;
+        height: 20px;
+    }
+    .error {
+        background:red;
+    }
+    .redFont {
+        color:red;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" value="切换" @click='change'>
+        <div v-bind:class="{active:isActive}"></div>
+        <div v-bind:class="[activeClass,errorClass,{redFont:isActive}]">2222</div>
+        <div v-bind:class="activeArr">2222</div>
+        <div v-bind:class="activeObj">22222</div>
+        <div v-bind:style='{border:boderStyle,width:widthStyle,height:heightStyle}'>22222</div>
+
+
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                isActive:true,
+                activeClass:'active',
+                errorClass:'error',
+                activeArr:['active','redFont'],
+                activeObj:{
+                    active:true,
+                    redFont:true
+                },
+                boderStyle:'1px solid red',
+                widthStyle:'10px',
+                heightStyle:'10px'
+            },
+            methods:{
+                change:function(){
+                    // this.isActive=!this.isActive
+                    this.activeClass='',
+                    this.errorClass=''
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

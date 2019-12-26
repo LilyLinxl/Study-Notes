@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <span v-if='score>10'>大</span>
+        <span v-else-if='score<10'>小</span>
+        <span v-else>相等</span>
+        <span v-show="ok">ok</span>
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                score:10,
+                ok:false
+            }
+        });
+    </script>
+</body>
+
+</html>

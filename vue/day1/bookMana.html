@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div id="app">
+        <form action="" class="container">
+            <label for="id" >编号:</label>
+            <input type="text" id="id" v-model="id" :disabled="flag" v-focus>
+            <label for="name" >名称:</label>
+            <input type="text" id="name" v-model.lazy="name">{{tip}}
+            <input type="button" value="提交" @click="handle" :disabled="submitFlag">
+        </form>
+        <table class="table table-striped table-bordered table-hover ">
+            <thead class="table-dark">
+                <th>编号</th>
+                <th>名称</th>
+                <th>时间</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+                <tr :key="item.id" v-for="item of books">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.date | formatDate}}</td>
+                    <td>
+                        <a href="" @click.prevent="toEdit(item.id)">修改</a>
+                        <a href="" @click.prevent="toDelete(item.id)">删除</a>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+        <span>总数:</span><span>{{total}}</span>
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script src="Date.js"></script>
+    <script>
+        Vue.directive('focus',{
+            inserted:function(el){
+                el.focus()
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                tip:'',
+              books:[],
+              id:'',
+              name:'',
+              flag:false,
+              submitFlag:false,
+            },
+            methods:{
+                handle:function(){
+                    if(this.flag){
+                        this.books.some((item)=>{
+                            if(item.id==this.id){
+                                item.name=this.name
+                            }
+                        })
+                        this.id=this.name=''
+                        this.flag=false
+                    }else{
+                        if(this.id&&this.name){
+                        this.books.push({
+                            id:this.id,
+                            name:this.name,
+                            date:''
+                        })
+                        this.id=this.name=''
+                    }
+                    }
+                    
+                },
+                toEdit:function(id){
+                    this.flag = true
+                    let book = this.books.filter((item)=>{
+                        return item.id==id
+                    })
+                    this.id=book[0].id
+                    this.name=book[0].name
+                },
+                toDelete:function(id){
+                    this.books=this.books.filter((item)=>{
+                        return item.id!=id
+                    })
+                }
+            },
+            filters:{
+                formatDate(time){
+                    let date = new Date(time);
+                    return dateFormat(date,'yyyy-MM-dd')
+                }
+            },
+            computed:{
+                total:function(){
+                    return this.books.length
+                }
+            },
+            watch:{
+                name:function(val){
+                   var flag =this.books.some((item)=>{
+                        return item.name==val
+                    })
+                    if(flag){
+                        this.submitFlag=true
+                    }else{
+                        this.submitFlag=false
+                    }
+
+                }
+            },
+            mounted:function(){
+                //该生命周期钩子函数被触发的时候，模板已经可以使用
+                //一般此时用于获取后台数据，然后把数据填充到模板
+                var data =[{
+                  id:1,
+                  name:'三国演义',
+                  date:1577277569
+              },{
+                  id:2,
+                  name:'西游记',
+                  date:1577277569
+              },{
+                  id:3,
+                  name:'水浒传',
+                  date:1577277569
+              },{
+                  id:4,
+                  name:'红楼梦',
+                  date:1577277569
+              }];
+              this.books = data;
+            }
+        });
+    </script>
+</body>
+</html>

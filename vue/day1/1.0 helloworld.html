@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <title>Document</title>
+    <style>
+        [v-clock]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+<div v-clock>{{msg}}</div>
+<div v-text='msg'></div>
+<div v-html='msg1'></div>
+<div v-pre>{{msg}}</div>
+<div v-once='msg'>{{msg}}</div>
+<input type="text" name="" id=""  v-model='msg'>
+<!-- <input type="button" v-on:click='handle' value="+"> -->
+<!-- <input type="button" @click='handle()' value="+"> -->
+<div v-text='num'></div>
+<button @click='handle(1,2,$event)'>SayHi</button>
+<button @click='handle1'>SayHi</button>
+<div v-on:click="handle0">
+    <a v-on:click.stop="handle">跳转</a>
+<a v-on:click.prevent="handle" href="www.baidu.com">跳转</a>
+</div>
+<!-- <input v-on:keyup.enter='submit'>
+<input v-on:keyup.delete='handle'> -->
+<input type="text" name="" v-on:keyup.delete='delete'  v-model='username'>
+<input type="text" @keyup.enter='submit' name="" id="">
+<input type="button" @click='submit' value='提交'>
+    </div>
+    <script>
+        /*
+        Vue基本使用步骤
+        1.需要提供标签用于填充数据
+        2.引入vue.js库文件
+        3.可以使用vue的语法做功能了
+        4.把vue提供的数据填充到标签里面
+        */
+ var vm = new Vue({
+     el:'#app',
+     data:{
+         msg:'Hello Vue',
+         msg1:'<h1>message</h1>',
+         num:1,
+         username:''
+     },
+     methods:{
+         handle:function(p,p1,event){
+             this.num++;
+             console.log(p,p1)
+             console.log(event.target.innerHTML)
+         },
+         handle1 :function(event){
+             console.log(event.target.innerHTML)
+         },
+         handle0:function(){
+             console.log('handle0')
+         },
+         submit:function(){
+             console.log('提交')
+         },
+         delete:function(){
+            this.username=''
+         }
+     }
+ });
+ /*
+ el:元素的挂载位置(css选择器或者dom元素)
+ data:模型数据（值是一个对象)
+
+ 插值表达式
+ + 1.数据填充到html标签中
+ + 2.进行简单的计算
+ */
+    </script>
+</body>
+</html>

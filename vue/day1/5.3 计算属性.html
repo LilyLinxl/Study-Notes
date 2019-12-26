@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <span >{{str}}</span><br>
+        <span >{{reverse}}</span><br>
+        <span >{{reverse}}</span><br>
+        <span >{{reverseFun()}}</span>
+        <span >{{reverseFun()}}</span>
+
+
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                str:'hello',
+            },
+            methods:{
+                reverseFun:function(){
+                    console.log("method")
+                    return this.str.split('').reverse().join('')
+                }
+            },
+            computed:{
+                reverse:function(){
+                    console.log("computed")
+                    return this.str.split('').reverse().join('')
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

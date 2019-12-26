@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <input type="text" name="" id="" v-model="newItem">{{newItem}}
+        <input type="button" value="新增" @click="add">
+        <input type="button" value="移除" @click="remove">
+        <input type="button" value="替换" @click="change">
+
+        <ul>
+            <li v-for="(value,index) of obj">
+                {{value}}
+            </li>
+        </ul>
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+
+            data: {
+              obj:['apple','banana','pair'],
+              newItem:''
+            },
+            methods:{
+                add:function(){
+                    this.obj.push(this.newItem)
+                },
+                remove:function(){
+                    this.obj.pop()
+                },
+                change:function(){
+                    this.obj = this.obj.slice(0,1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

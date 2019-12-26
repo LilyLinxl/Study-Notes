@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+       <input type="text" name="" id="" v-model="firstName">
+       <input type="text" name="" id="" v-model="lastName">
+       <div>{{fullName}}</div>
+    </div>
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+    <script>
+        //全局指令
+        Vue.directive('focus',{
+            inserted:function(el){
+                el.focus()
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                firstName:'jim',
+                lastName:'green',
+                fullName:'jim green'
+            },
+            watch:{
+                firstName:function(val){
+                    this.fullName=val+' '+this.lastName;
+                },
+                lastName:function(val){
+                    this.fullName=this.firstName+' '+ val;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
