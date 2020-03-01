@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html,body{
+      height: 500%;
+    }
+  </style>
+</head>
+<body>
+  <button id="btn">点我</button>
+  <script>
+    //函数节流，一个函数执行一次后，只有大于设定的执行周期后才会执行第二次
+    //有个需要频繁触发的函数，出于优化性能角度，在规定时间内，只让函数触发的第一次生效，后面不生效
+    function throttle(fn,delay){
+      var lastTime = 0;
+      return function(){
+        var nowTime = Date.now()
+        if(nowTime - lastTime>delay){
+          fn.call(this)
+          lastTime = nowTime
+        }
+      }
+    }
+    document.onscroll = throttle(function(){console.log('scroll'+Date.now())},200)
+    //防抖函数，一个需要频繁触发的函数，在规定时间内，只让最后一次生效，前面的不生效
+    function debounce(fn,delay){
+      var timer = null
+      return function(){
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+          fn.apply(this)
+        }, delay);
+      }
+    }
+    document.getElementById('btn').onclick = debounce(function(){console.log('click'+Date.now())},2000)
+  </script>
+</body>
+</html>

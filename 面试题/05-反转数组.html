@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    arr = [1,2,3,4,5,6,7]
+    //从头部和尾部开始往中间相互替换
+    for(var i =0;i<arr.length/2;i++)//替换次数
+    {
+      var temp = arr[i]
+      arr[i] = arr[arr.length-1-i]
+      arr[arr.length-1-i] =temp
+    }
+    console.log(arr)
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+  <title>1px物理像素实现方法1</title>
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    #box {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-bottom: 1px solid #000;
+      /* css像素 */
+    }
+  </style>
+</head>
+<body>
+  <!-- 像素比 = 物理像素/css像素 -->
+  <!-- 物理像素不变的情况下，像素比越大，css像素越小，所以要修改缩放比例让css像素变小 -->
+  <div id="box">
+    修改缩放比
+  </div>
+  <script>
+    window.onload = function(){
+      //像素比
+      var dpr = window.devicePixelRatio;
+      //在pc，安卓，苹果端dpr不同
+      //移动端设配meta标签，操作meta标签中的缩放比initial-scale
+      //缩放比例
+      var scale = 1/dpr;
+      var metaNode = document.querySelector('meta[name="viewport"]')
+      var width = document.documentElement.clientWidth;
+
+      metaNode.setAttribute('content','width=device-width,initial-scale='+scale+',user-scalable=no');
+      //物理像素一样了(移动端线明显变细了)，但是盒子大小在移动端明显变小了
+      //把盒子的宽高改成0.5rem
+      //以dpr=2为例，200px*200px的盒子会被缩放成100px*100px，如果我还想要200px的，那么就得再放大两倍
+      //那么0.5rem需要乘以1/0.5
+      //页面中元素宽度，高度，比列反向乘回来
+      var htmlNode = document.querySelector('html');
+      htmlNode.style.fontSize = width * dpr + 'px';
+    }
+  </script>
+</body>
+</html>

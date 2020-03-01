@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>如果实现移动端rem适配</title>
+  <style>
+    * {
+      margin:0;
+      padding:0;
+    }
+    #box {
+      width: 0.5rem;
+      height: 0.5rem;
+      background-color:violet;
+    }
+  </style>
+</head>
+<body>
+  <div id="box"></div>
+  <script>
+    //移动端适配meta viewpoint这一句必须得有
+    //那么为什么要用rem适配呢
+    //为了解决同一个元素在不同的设备上显示的效果不一样
+    //如何实现
+    //1.html根元素字体大小设置为屏幕区域的宽
+    window.onload = function(){
+      //获取屏幕区域的宽度
+      var width = document.documentElement.clientWidth;
+      //获取html
+      var htmlNode = document.querySelector('html')
+      //设置字体大小
+      htmlNode.style.fontSize = width + 'px'
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    var arr = [1,1,2,3,1,4,5,1]
+    var arr1 = []
+    arr1[0] = arr[0]
+    //按顺序取出arr中的项与arr1的每一项作比较，如果没有相同的就放到arr1里
+    for(var i = 1;i< arr.length;i++){
+      for(var j = 0;j< arr1.length;j++){
+        if(arr[i] === arr1[j]){
+          break
+        }
+        if(j==arr1.length -1){//直到最后也没有找到相同的就添加
+          arr1.push(arr[i])
+        }
+      }
+    }
+    console.log(arr1)
+  </script>
+</body>
+</html>

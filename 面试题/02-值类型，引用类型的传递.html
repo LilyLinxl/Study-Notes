@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function Person(name,age,salary){//构造函数
+      this.name = name;
+      this.age = age;
+      this.salary = salary;
+    }
+    function f1(person){//普通函数
+    //var person = p //p保存的是对象在堆内存中的地址
+    //在栈内存再开辟一个空间给person
+    //现在两个变量都指向同一个堆内存中的地址
+      person.name = "ls";//修改的就是对象的name
+      person = new Person("aa",18,10);//person变量指向另一个堆内存中的对象（重新创建的对象）
+      //现在p和person指向了不同的对象person发生了变化，但是p不变
+    }
+    var p = new Person("zs",18,1000);//传入实例参数
+    //1.变量p值类型，在栈内存开辟空间，new Person("zs",18,1000)是引用类型，
+    //在堆内存中开辟空间，然后p保存对象在堆内存中的地址0x100。
+    //换句话说当前栈内存中变量的地址指向堆内存中存储对象的地址
+    console.log(p.name);//zs
+    f1(p);
+    console.log(p.name);//ls
+    
+    
+  </script>
+</body>
+</html>
