@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 第一题作用域
+    var num1 = 55; //全局变量，定义在window上
+    var num2 = 66;
+    function f1(num,num1){//形式参数，形参
+      //var num = 55;隐式的操作，函数内部进行变量声明，变量声明提升
+      //var num1 = 66;
+      num = 100;
+      num1 = 100;
+      num2 = 100;//没有用var定义，不是函数内部的私有变量，所以这是全局的num2
+      console.log(num);//100
+      console.log(num1);//100
+      console.log(num2);//100
+    }
+    f1(num1,num2);
+    //变量的值是存储在栈内存当中的，那现在变量之间的赋值相当于
+    //值进行传递
+    //所以这里相当于把55,66 复制一份然后传入函数当中
+    console.log(num1);//num1是全局变量 55
+    console.log(num2);//100
+    console.log(num);//报错，不是函数内部的num，全局也没有num
+    
+    
+    
+  </script>
+</body>
+</html>
